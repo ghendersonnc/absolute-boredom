@@ -4,30 +4,24 @@ use App\Controllers\AboutController;
 use App\Controllers\HomeController;
 use App\Middleware\MiddlewareOne;
 use App\Middleware\MiddlewareTwo;
+use App\Route;
 
 $route = explode('?', $_SERVER['REQUEST_URI'])[0];
-
-function createRunner($middlewares, $controller) {
-    return array_reduce(
-        array_reverse($middlewares),
-        function ($next, $middleware) {
-            return function ($request = []) use ($middleware, $next) {
-                return $middleware($request, $next);
-            };
-        },
-        $controller
-    );
-}
-
+$routing = new Route();
 switch ($route) {
     case '/home':
+    case '/index':
+    case '/index.php':
+    case '/index.html':
     case '/':
+        $routing->httpMethod('GET');
         $middlewares = [new MiddlewareOne(), new MiddlewareTwo()];
-        $runner = createRunner($middlewares, [new HomeController(), 'index']);
+        $runner = $routing->createRunner($middlewares, [new HomeController(), 'index']);
         $runner();
         break;
     case '/about':
-        $runner = createRunner([], [new AboutController(), 'index']);
+        $routing->httpMethod('GET');
+        $runner = $routing->createRunner([], [new AboutController(), 'index']);
         $runner();
         break;
     default:

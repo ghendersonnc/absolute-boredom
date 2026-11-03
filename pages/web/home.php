@@ -12,8 +12,4 @@
         var_dump($request);
         ?>
     </p>
-    <?php
-
-        var_dump($_GET);
-    ?>
 </div>
