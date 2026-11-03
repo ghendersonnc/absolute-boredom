@@ -1,0 +1,23 @@
+networks:
+  lnmp:
+    driver: bridge
+
+services:
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./public:/var/www/html/public:ro
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    networks:
+      - lnmp
+
+  php:
+    build:
+      dockerfile: Dockerfile
+    container_name: php-container
+    networks:
+      - lnmp
+    volumes:
+      - .:/var/www/html

@@ -1,0 +1,13 @@
+body {
+    margin: 0;
+}
+
+#header {
+    background: #614a86;
+    color: white;
+    padding: 1em 0.25em;
+}
+
+#header h1 {
+    margin: 0;
+}
